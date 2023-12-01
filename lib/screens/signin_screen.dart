@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market/screens/profile_screen.dart';
 import 'package:market/screens/signup_screen.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -101,10 +102,10 @@ class SignIn extends StatelessWidget {
                 // Handle sign-in logic here
                 final String username = usernameController.text;
                 final String password = passwordController.text;
-
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfileScreen()));
                 if (username == 'contohuser' && password == 'contohpassword') {
                   // Sign-in berhasil
-                  print('Sign-in berhasil');
+                  
                 } else {
                   // Sign-in gagal
                   print('Sign-in gagal');
