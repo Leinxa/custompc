@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key});
@@ -22,21 +23,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String? selectedGender;
+  final TextEditingController date = TextEditingController();
   DateTime selectedDate = DateTime.now();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
+  @override
+  void initState(){
+    date.text=" ";
+    super.initState();
   }
 
   @override
@@ -89,13 +81,29 @@ class _ProfileState extends State<Profile> {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(16),
-            child: Column(
-               children: [
+            child: Form(
+               child: Column(children:[
             _buildProfileTextField("Nickname"),
             SizedBox(height: 12), // Ruang antara input box "Nickname" dan "Gender"
             _buildProfileDropdown("Gender"),
             SizedBox(height: 12), // Ruang antara input box "Gender" dan "Birth Date"
-            _buildProfileTextField("Birth Date", icon: Icons.calendar_today, onTap: () => _selectDate(context)),
+            _buildProfileDate("Birth Date ", icon: Icons.calendar_today, onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context, initialDate: DateTime.now(),
+                      firstDate: DateTime(1985), 
+                      lastDate: DateTime(2050)
+                  );
+                  
+                  if(pickedDate != null ){
+                      print(pickedDate);  
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); 
+                      print(formattedDate); 
+                      setState(() {
+                         date.text = formattedDate; 
+                      });
+                  }else{
+                      print("Date is not selected");
+                  }}),
             SizedBox(height: 12), // Ruang antara input box "Birth Date" dan "Address"
             _buildProfileTextField("Address"),
             SizedBox(height: 12), // Ruang antara input box "Address" dan "Email"
@@ -112,7 +120,7 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
-        ],
+      )],
       ),
     );
   }
@@ -146,7 +154,36 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
+Widget _buildProfileDate(String label, {IconData? icon, Function()? onTap}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Stack(
+        children: [
+          TextField(
+            controller: date,
+            decoration: InputDecoration(
+              labelText: label,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            readOnly: onTap != null,
+            onTap: onTap,
+        ),
+          if (icon != null)
+            Positioned(
+              right: 10,
+              top: 10,
+              child: GestureDetector(
+                onTap: onTap,
+                child: Icon(icon),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
   Widget _buildProfileDropdown(String label) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
