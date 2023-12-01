@@ -109,7 +109,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: 12), // Ruang antara input box "Address" dan "Email"
             _buildProfileTextField("Email"),
             SizedBox(height: 12), // Ruang antara input box "Email" dan "Phone Number"
-            _buildProfileTextField("Phone Number"),
+            _buildProfileNumberField("Phone Number"),
                 SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () {
@@ -131,6 +131,41 @@ class _ProfileState extends State<Profile> {
       child: Stack(
         children: [
           TextField(
+            decoration: InputDecoration(
+              labelText: label,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            readOnly: onTap != null,
+            onTap: onTap,
+        ),
+          if (icon != null)
+            Positioned(
+              right: 10,
+              top: 10,
+              child: GestureDetector(
+                onTap: onTap,
+                child: Icon(icon),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+  Widget _buildProfileNumberField(String label, {IconData? icon, Function()? onTap}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Stack(
+        children: [
+          TextField(
+            keyboardType: TextInputType.phone,
+            inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
+        FilteringTextInputFormatter.digitsOnly
+
+          ],
             decoration: InputDecoration(
               labelText: label,
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
