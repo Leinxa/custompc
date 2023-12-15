@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage> {
       title: 'Rakit PC',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('RAKIT PC'),
+          title: Text('MyPC'),
           backgroundColor: Colors.blue,
           centerTitle: true,
         ),
