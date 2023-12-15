@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:market/screens/homepage_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key});
@@ -24,7 +25,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String? selectedGender;
   final TextEditingController date = TextEditingController();
-  DateTime selectedDate = DateTime.now();
+
   @override
   void initState(){
     date.text=" ";
@@ -93,7 +94,6 @@ class _ProfileState extends State<Profile> {
                       firstDate: DateTime(1985), 
                       lastDate: DateTime(2050)
                   );
-                  
                   if(pickedDate != null ){
                       print(pickedDate);  
                       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); 
@@ -113,7 +113,10 @@ class _ProfileState extends State<Profile> {
                 SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle submit button click
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage())
+                  );
                   },
                   child: Text('Submit'),
                 ),
@@ -125,7 +128,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildProfileTextField(String label, {IconData? icon, Function()? onTap}) {
+  Widget _buildProfileTextField(String label, {IconData? icon}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Stack(
@@ -138,23 +141,13 @@ class _ProfileState extends State<Profile> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            readOnly: onTap != null,
-            onTap: onTap,
         ),
-          if (icon != null)
-            Positioned(
-              right: 10,
-              top: 10,
-              child: GestureDetector(
-                onTap: onTap,
-                child: Icon(icon),
-              ),
-            ),
         ],
       ),
     );
   }
-  Widget _buildProfileNumberField(String label, {IconData? icon, Function()? onTap}) {
+
+  Widget _buildProfileNumberField(String label, {IconData? icon}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Stack(
@@ -164,7 +157,6 @@ class _ProfileState extends State<Profile> {
             inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
         FilteringTextInputFormatter.digitsOnly
-
           ],
             decoration: InputDecoration(
               labelText: label,
@@ -173,22 +165,12 @@ class _ProfileState extends State<Profile> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            readOnly: onTap != null,
-            onTap: onTap,
         ),
-          if (icon != null)
-            Positioned(
-              right: 10,
-              top: 10,
-              child: GestureDetector(
-                onTap: onTap,
-                child: Icon(icon),
-              ),
-            ),
         ],
       ),
     );
   }
+
 Widget _buildProfileDate(String label, {IconData? icon, Function()? onTap}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
