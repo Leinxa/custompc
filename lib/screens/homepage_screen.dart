@@ -10,7 +10,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Rakit PC',
+      title: 'MyPC',
       home: Scaffold(
         appBar: AppBar(
           title: Text('MyPC'),
