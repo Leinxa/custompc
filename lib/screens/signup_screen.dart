@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
-
-class SignUpScreen extends StatelessWidget {
+import 'package:market/Network/api.dart';
+import 'package:market/screens/profile_screen.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key});
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+    final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final Color labelTextColor = Color(0xFF0077B6); // Color for label text
+
+  String getEmail(){
+    return emailController.text.toString();
+  }
+
+  String getPassword(){
+    if (passwordController.text == confirmPasswordController.text) {
+      return passwordController.text.toString();
+    }else{
+      return "";
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -11,21 +35,7 @@ class SignUpScreen extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       home: Scaffold(
-        body: SignUp(),
-      ),
-    );
-  }
-}
-
-class SignUp extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-  final Color labelTextColor = Color(0xFF0077B6); // Color for label text
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
+        body: Center(
       child: Container(
         width: 360,
         height: 640,
@@ -54,13 +64,13 @@ class SignUp extends StatelessWidget {
             ),
             SizedBox(height: 60),
             TextFormField(
-              controller: usernameController,
+              controller: emailController,
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.person,
                   color: const Color.fromARGB(255, 0, 118, 182),
                 ),
-                labelText: 'Username',
+                labelText: 'Email',
                 labelStyle: TextStyle(
                   color: labelTextColor, // Use the labelTextColor
                 ),
@@ -129,17 +139,7 @@ class SignUp extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Handle sign-up logic here
-                final String password = passwordController.text;
-                final String confirmPassword = confirmPasswordController.text;
-
-                if (password == confirmPassword) {
-                  // Passwords match, proceed with sign-up
-                  // Add your sign-up logic here
-                } else {
-                  // Passwords don't match, show an error message
-                  print('Passwords do not match');
-                }
+                _SignUp();
               },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFF0077B6),
@@ -155,10 +155,24 @@ class SignUp extends StatelessWidget {
           ],
         ),
       ),
-    );
+    )));
   }
-}
-
-void main() {
-  runApp(SignUpScreen());
+  void _SignUp() async{
+    var data = {
+      'email' : getEmail(),
+      'password': getPassword()
+    };
+    var res = await Network().auth(data, '/register');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['status']==200){
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['token']));
+      localStorage.setString('user', json.encode(body['user']));
+       Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen())
+                  );
+  }
+  }
 }

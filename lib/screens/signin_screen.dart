@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:market/screens/homepage_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:market/Network/api.dart';
+import 'dart:convert';
 import 'package:market/screens/profile_screen.dart';
 import 'package:market/screens/signup_screen.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key});
 
   @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  bool isAuth = false;
+
+  @override
+  void initState(){
+    super.initState();
+    _checkIfLoggedIn();
+  }
+  bool visible=false;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  String getEmail(){
+    return usernameController.text.toString();
+  }
+  String getpassword(){
+    return passwordController.text.toString();
+  }
+   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -13,19 +40,7 @@ class SignInScreen extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white, // Ganti dengan warna putih
       ),
       home: Scaffold(
-        body: SignIn(),
-      ),
-    );
-  }
-}
-
-class SignIn extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
+        body: Center(
       child: Container(
         width: 360,
         height: 640,
@@ -99,17 +114,7 @@ class SignIn extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Handle sign-in logic here
-                final String username = usernameController.text;
-                final String password = passwordController.text;
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfileScreen()));
-                if (username == 'contohuser' && password == 'contohpassword') {
-                  // Sign-in berhasil
-                  
-                } else {
-                  // Sign-in gagal
-                  print('Sign-in gagal');
-                }
+                _login();
               },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFF0077B6),
@@ -144,6 +149,44 @@ class SignIn extends StatelessWidget {
           ],
         ),
       ),
-    );
+    )));
+  }
+  
+void _login() async{
+    var data = {
+      'email' : getEmail(),
+      'password' : getpassword()
+    };
+
+    var res = await Network().auth(data, '/login');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['status']==200){
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['token']));
+      localStorage.setString('user', json.encode(body['user']));
+       Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage())
+                  );
+      ;
+  }
+}
+void _checkIfLoggedIn() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    if(token != null){
+      if(mounted){
+        setState(() {
+          isAuth = true;
+          if (isAuth = true) {
+            Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+          }
+        });
+      }
+    }
   }
 }

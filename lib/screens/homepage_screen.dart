@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:market/screens/signin_screen.dart';
+import 'menuprofile_screen.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isAuth = false;
+
+  @override
+  void initState(){
+    super.initState();
+    _checkIfLoggedIn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.account_circle,
                 onTap: () {
                   // Tambahkan aksi ketika kotak keempat ditekan
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanTujuan()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MenuProfile()));
                 },
               ),
             ],
@@ -126,7 +135,21 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
+    void _checkIfLoggedIn() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    if(token == null){
+        setState(() {
+          isAuth = false;
+          if (isAuth = false) {
+            Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
+          }
+        });
+    }
+  }
   void _onItemTapped(int index) {
     setState(() {
     });
