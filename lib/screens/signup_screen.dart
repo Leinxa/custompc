@@ -167,8 +167,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     print(body);
     if(body['status']==200){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', json.encode(body['token']));
-      localStorage.setString('user', json.encode(body['user']));
+      localStorage.setString('token', json.decode(body['token']));
+      localStorage.setString('user', json.encode(body['user_id']));
        Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfileScreen())

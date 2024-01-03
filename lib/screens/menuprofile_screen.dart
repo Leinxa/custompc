@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:market/Network/api.dart';
 import 'package:market/screens/signin_screen.dart';
 import 'dart:convert';
+import 'profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class MenuProfile extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class MenuProfile extends StatefulWidget {
 
 class _MenuProfileState extends State<MenuProfile> {
   int _currentIndex = 0;
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +30,10 @@ class _MenuProfileState extends State<MenuProfile> {
             // Edit Profile
             GestureDetector(
               onTap: () {
-                // Go to edit profile page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen())
+                  );
               },
               child: Container(
                 width: 253,

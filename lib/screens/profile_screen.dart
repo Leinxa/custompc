@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:market/Network/api.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:market/screens/homepage_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -25,13 +28,27 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String? selectedGender;
   final TextEditingController date = TextEditingController();
+  final TextEditingController nickname = TextEditingController();
+  final TextEditingController address = TextEditingController();
+  final TextEditingController phone = TextEditingController();
 
   @override
   void initState(){
     date.text=" ";
     super.initState();
   }
-
+  String getDate(){
+    return date.text.toString();
+  }
+  String getAddress(){
+    return address.text.toString();
+  }
+  String getPhone(){
+    return phone.text.toString();
+  }
+  String getName(){
+    return nickname.text.toString();
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -84,7 +101,7 @@ class _ProfileState extends State<Profile> {
             padding: EdgeInsets.all(16),
             child: Form(
                child: Column(children:[
-            _buildProfileTextField("Nickname"),
+            _buildProfileNicknameField("Nickname"),
             SizedBox(height: 12), // Ruang antara input box "Nickname" dan "Gender"
             _buildProfileDropdown("Gender"),
             SizedBox(height: 12), // Ruang antara input box "Gender" dan "Birth Date"
@@ -105,18 +122,13 @@ class _ProfileState extends State<Profile> {
                       print("Date is not selected");
                   }}),
             SizedBox(height: 12), // Ruang antara input box "Birth Date" dan "Address"
-            _buildProfileTextField("Address"),
-            SizedBox(height: 12), // Ruang antara input box "Address" dan "Email"
-            _buildProfileTextField("Email"),
+            _buildProfileAddressField("Address"),
             SizedBox(height: 12), // Ruang antara input box "Email" dan "Phone Number"
             _buildProfileNumberField("Phone Number"),
                 SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage())
-                  );
+                    _SignUp();
                   },
                   child: Text('Submit'),
                 ),
@@ -128,12 +140,33 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildProfileTextField(String label, {IconData? icon}) {
+  Widget _buildProfileNicknameField(String label,{IconData? icon}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Stack(
         children: [
           TextField(
+            controller: nickname,
+            decoration: InputDecoration(
+              labelText: label,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+        ),
+        ],
+      ),
+    );
+  }
+
+    Widget _buildProfileAddressField(String label,{IconData? icon}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Stack(
+        children: [
+          TextField(
+            controller: address,
             decoration: InputDecoration(
               labelText: label,
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
@@ -153,6 +186,7 @@ class _ProfileState extends State<Profile> {
       child: Stack(
         children: [
           TextField(
+            controller: phone,
             keyboardType: TextInputType.phone,
             inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
@@ -226,5 +260,23 @@ Widget _buildProfileDate(String label, {IconData? icon, Function()? onTap}) {
         }).toList(),
       ),
     );
+  }
+  void _SignUp() async{ 
+    var data = {
+      'name' : getName(),
+      'Alamat' : getAddress(),
+      'JK' : selectedGender,
+      'tgl_lahir' : getDate(),
+      'phone' : getPhone()
+    };
+    var res = await Network().edit(data, '/profile');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['status']==200){
+       Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage())
+                  );
+  }
   }
 }
