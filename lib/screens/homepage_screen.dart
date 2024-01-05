@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market/screens/listpage_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:market/screens/signin_screen.dart';
 import 'menuprofile_screen.dart';
@@ -36,8 +37,7 @@ class _HomePageState extends State<HomePage> {
                 text: 'Daftar Barang',
                 icon: Icons.inventory,
                 onTap: () {
-                  // Tambahkan aksi ketika kotak pertama ditekan
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanTujuan()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ListPage()));
                 },
               ),
               SizedBox(height: 20),

@@ -40,6 +40,13 @@ class Network{
     );
   }
 
+  getDataCpu(apiURL) async{
+    var fullUrl = _url + apiURL;
+    return await http.get(
+      Uri.parse(fullUrl),
+      headers: _setHeaders(),
+    );
+  }
   _setHeaders() => {
     'Content-type': 'application/json',
     'Accept': 'application/json',
