@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:market/Network/api.dart';
+import 'package:market/screens/rakitanbaru_screen.dart';
+import 'package:market/screens/rakitanlama_screen.dart';
 import 'package:market/screens/signin_screen.dart';
 import 'dart:convert';
 import 'profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class MenuProfile extends StatefulWidget {
+class RakitanPage extends StatefulWidget {
   @override
-  _MenuProfileState createState() => _MenuProfileState();
+  _RakitanPageState createState() => _RakitanPageState();
 }
 
-class _MenuProfileState extends State<MenuProfile> {
-  int _currentIndex = 4;
+class _RakitanPageState extends State<RakitanPage> {
+  int _currentIndex = 2;
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Menu Profile',
+          'Rakitan PC',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -32,7 +34,7 @@ class _MenuProfileState extends State<MenuProfile> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen())
+                  MaterialPageRoute(builder: (context) => RakitanBaruPage())
                   );
               },
               child: Container(
@@ -45,7 +47,7 @@ class _MenuProfileState extends State<MenuProfile> {
                 ),
                 child: Center(
                   child: Text(
-                    "Edit Profile",
+                    "Buat Rakitan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -57,18 +59,21 @@ class _MenuProfileState extends State<MenuProfile> {
             // Log Out
             GestureDetector(
               onTap: () {
-                logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RakitanLamaPage())
+                  );
               },
               child: Container(
                 width: 253,
                 height: 45,
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: Center(
                   child: Text(
-                    "Log Out",
+                    "Rakitan Sebelumnya",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

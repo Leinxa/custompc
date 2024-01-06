@@ -7,31 +7,13 @@ class StoragePage extends StatefulWidget {
 }
 
 class _StoragePageState extends State<StoragePage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Map<String, dynamic>> storageList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Storage 1", "image": "https://example.com/storage1.jpg", "price": 500000.0},
-      {"name": "Storage 2", "image": "https://example.com/storage2.jpg", "price": 600000.0},
-      {"name": "Storage 3", "image": "https://example.com/storage3.jpg", "price": 700000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> storageListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      storageList = storageListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +75,11 @@ class _StoragePageState extends State<StoragePage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: storageList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = storageList[index]['image'];
-              String storageName = storageList[index]['name'];
-              double storagePrice = storageList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String storageName = 'placeholder';
+              double storagePrice = 1200000;
 
               return Column(
                 children: [

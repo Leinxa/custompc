@@ -7,31 +7,13 @@ class VideoCardPage extends StatefulWidget {
 }
 
 class _VideoCardPageState extends State<VideoCardPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Map<String, dynamic>> videoCardList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Video Card 1", "image": "https://example.com/videocard1.jpg", "price": 8000000.0},
-      {"name": "Video Card 2", "image": "https://example.com/videocard2.jpg", "price": 10000000.0},
-      {"name": "Video Card 3", "image": "https://example.com/videocard3.jpg", "price": 12000000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> videoCardListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      videoCardList = videoCardListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +75,11 @@ class _VideoCardPageState extends State<VideoCardPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: videoCardList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = videoCardList[index]['image'];
-              String videoCardName = videoCardList[index]['name'];
-              double videoCardPrice = videoCardList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String videoCardName = 'placeholder';
+              double videoCardPrice = 1200000;
 
               return Column(
                 children: [

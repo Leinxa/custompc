@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:market/screens/detailitem_screen.dart';
+import 'package:market/screens/list/detail/detailitem_screen.dart';
 import 'package:market/Network/api.dart';
 import 'package:market/model/cpu.dart';
 import 'package:http/http.dart' as http;
+import 'package:market/screens/list/listpagecasing_screen.dart';
+import 'package:market/screens/list/listpagecooler_screen.dart';
+import 'package:market/screens/list/listpagemotherboard_screen.dart';
+import 'package:market/screens/list/listpagepsu_screen.dart';
 import 'dart:convert';
+
+import 'package:market/screens/list/listpageram_screen.dart';
+import 'package:market/screens/list/listpagestorage.dart';
+import 'package:market/screens/list/listpagevga_screen.dart';
 class ListPage extends StatefulWidget {
   @override
   _ListPageState createState() => _ListPageState();
 }
 
 class _ListPageState extends State<ListPage> {
-  int _currentIndex = 0;
-  late Future<Cpu> futureCpu;
+  int _currentIndex = 1;
+  String selectedCategory = 'cpu';
+  final Network network = Network();
 
 @override
   void initState() {
     super.initState();
-    futureCpu = fetchcpu();
   }
 
   @override
@@ -41,19 +49,64 @@ class _ListPageState extends State<ListPage> {
       body: Column(
         children: <Widget>[
           DropdownButton<String>(
+            value: selectedCategory,
             items: <String>[
               'cpu',
-              'Kategori 2',
-              'Kategori 3',
-              'Kategori 4'
+              'motherboard',
+              'psu',
+              'vga',
+              'cooler',
+              'casing',
+              'ram',
+              'storage',
             ].map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
               );
             }).toList(),
-            onChanged: (_) {
-              // Handle category change
+            onChanged: (value) {
+              selectedCategory = value!;
+              if (value=='ram') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPageRam())
+                  );
+              }else if (value=='storage') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPageStorage())
+                  );
+              }
+              else if (value=='vga') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPagevga())
+                  );
+              }
+              else if (value=='psu') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPagepsu())
+                  );
+              }
+              else if (value=='casing') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPagecasing())
+                  );
+              }
+              else if (value=='cooler') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPagecooler())
+                  );
+              }else if (value=='motherboard') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListPagemotherboard())
+                  );
+              }
             },
             hint: Text('Kategori'),
           ),
@@ -61,22 +114,23 @@ class _ListPageState extends State<ListPage> {
             child: Container(
               height: 400, 
               child: FutureBuilder<Cpu>(
-                future: futureCpu,
+                future: network.fetchCpu(),
                 builder: (context, snapshot) {
                   if(snapshot.hasData){
-                  return Card(
+                    return ListView.builder(
+                      itemCount: snapshot.data!.data.length,
+                      itemBuilder: (context,index){
+                        Data currentData = snapshot.data!.data[index];
+                        return Card(
                     child: ListTile(
-                      leading: Icon(
-                        Icons.image,
-                        size: 36, // Set the desired size
-                      ),
-                      title: Text('Nama Barang'),
-                      subtitle: Text('Rp 000.000,00'),
+                      leading: Image.network(currentData.imageUrl),
+                      title: Text(currentData.name),
+                      subtitle: Text('Rp: '+currentData.price.toString()),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DetailBarangPage(),
+                            builder: (context) => DetailBarangPage(data: currentData),
                           ),
                         );
                       },
@@ -88,6 +142,8 @@ class _ListPageState extends State<ListPage> {
                       ),
                     ),
                   );
+                      }
+                      );
                 } return const CircularProgressIndicator();}
               ),
             ),
@@ -134,14 +190,4 @@ class _ListPageState extends State<ListPage> {
       ),
     );
   }
-}
-
-Future<Cpu> fetchcpu() async{
-  var res = await http
-      .get(Uri.parse('http://10.0.2.2:8000/api/list/cpu'));;
-  if (res.statusCode == 200) {
-  return Cpu.fromJson(jsonDecode(res.body));
-} else {
-  throw Exception('Failed to load data');
-}
 }

@@ -7,31 +7,12 @@ class CpuCoolerPage extends StatefulWidget {
 }
 
 class _CpuCoolerPageState extends State<CpuCoolerPage> {
-  int _currentIndex = 0;
-  List<Map<String, dynamic>> cpuCoolerList = [];
+  int _currentIndex = 2;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Cooler 1", "image": "https://example.com/cooler1.jpg", "price": 800000.0},
-      {"name": "Cooler 2", "image": "https://example.com/cooler2.jpg", "price": 1000000.0},
-      {"name": "Cooler 3", "image": "https://example.com/cooler3.jpg", "price": 1200000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> cpuCoolerListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      cpuCoolerList = cpuCoolerListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +74,11 @@ class _CpuCoolerPageState extends State<CpuCoolerPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: cpuCoolerList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = cpuCoolerList[index]['image'];
-              String coolerName = cpuCoolerList[index]['name'];
-              double coolerPrice = cpuCoolerList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String coolerName = 'placeholder';
+              double coolerPrice = 120000;
 
               return Column(
                 children: [

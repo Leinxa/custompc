@@ -1,23 +1,23 @@
 // To parse this JSON data, do
 //
-//     final cpu = cpuFromJson(jsonString);
+//     final casing = casingFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Cpu cpuFromJson(String str) => Cpu.fromJson(json.decode(str));
+Casing casingFromJson(String str) => Casing.fromJson(json.decode(str));
 
-String cpuToJson(Cpu data) => json.encode(data.toJson());
+String casingToJson(Casing data) => json.encode(data.toJson());
 
-class Cpu {
+class Casing {
     List<Data> data;
 
-    Cpu({
+    Casing({
         required this.data,
     });
 
-    factory Cpu.fromJson(Map<String, dynamic> json) => Cpu(
-        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
+    factory Casing.fromJson(Map<String, dynamic> json) => Casing(
+        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x)))
     );
 
     Map<String, dynamic> toJson() => {
@@ -26,49 +26,49 @@ class Cpu {
 }
 
 class Data {
-    int id;
     String name;
-    String decs;
-    String type;
+    String desc;
     String imageUrl;
+    String size;
     String stok;
     int price;
-    DateTime createdAt;
     DateTime updatedAt;
+    DateTime createdAt;
+    int id;
 
     Data({
-        required this.id,
         required this.name,
-        required this.decs,
-        required this.type,
+        required this.desc,
         required this.imageUrl,
+        required this.size,
         required this.stok,
         required this.price,
-        required this.createdAt,
         required this.updatedAt,
+        required this.createdAt,
+        required this.id,
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
         name: json["name"],
-        decs: json["decs"],
-        type: json["type"],
+        desc: json["desc"],
         imageUrl: json["image_url"],
+        size: json["size"],
         stok: json["stok"],
         price: json["price"],
-        createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        id: json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
-        "decs": decs,
-        "type": type,
+        "desc": desc,
         "image_url": imageUrl,
+        "size": size,
         "stok": stok,
         "price": price,
-        "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt.toIso8601String(),
+        "id": id,
     };
 }

@@ -7,31 +7,13 @@ class MemoryPage extends StatefulWidget {
 }
 
 class _MemoryPageState extends State<MemoryPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Map<String, dynamic>> memoryList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Memory 1", "image": "https://example.com/memory1.jpg", "price": 500000.0},
-      {"name": "Memory 2", "image": "https://example.com/memory2.jpg", "price": 600000.0},
-      {"name": "Memory 3", "image": "https://example.com/memory3.jpg", "price": 700000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> memoryListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      memoryList = memoryListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +75,11 @@ class _MemoryPageState extends State<MemoryPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: memoryList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = memoryList[index]['image'];
-              String memoryName = memoryList[index]['name'];
-              double memoryPrice = memoryList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String memoryName = 'placeholder';
+              double memoryPrice = 1200000;
 
               return Column(
                 children: [

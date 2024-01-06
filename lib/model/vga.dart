@@ -1,22 +1,22 @@
 // To parse this JSON data, do
 //
-//     final cpu = cpuFromJson(jsonString);
+//     final vga = vgaFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Cpu cpuFromJson(String str) => Cpu.fromJson(json.decode(str));
+Vga vgaFromJson(String str) => Vga.fromJson(json.decode(str));
 
-String cpuToJson(Cpu data) => json.encode(data.toJson());
+String vgaToJson(Vga data) => json.encode(data.toJson());
 
-class Cpu {
+class Vga {
     List<Data> data;
 
-    Cpu({
+    Vga({
         required this.data,
     });
 
-    factory Cpu.fromJson(Map<String, dynamic> json) => Cpu(
+    factory Vga.fromJson(Map<String, dynamic> json) => Vga(
         data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
     );
 
@@ -26,49 +26,45 @@ class Cpu {
 }
 
 class Data {
-    int id;
     String name;
-    String decs;
-    String type;
+    String desc;
     String imageUrl;
     String stok;
     int price;
-    DateTime createdAt;
     DateTime updatedAt;
+    DateTime createdAt;
+    int id;
 
     Data({
-        required this.id,
         required this.name,
-        required this.decs,
-        required this.type,
+        required this.desc,
         required this.imageUrl,
         required this.stok,
         required this.price,
-        required this.createdAt,
         required this.updatedAt,
+        required this.createdAt,
+        required this.id,
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
         name: json["name"],
-        decs: json["decs"],
-        type: json["type"],
+        desc: json["desc"],
         imageUrl: json["image_url"],
         stok: json["stok"],
         price: json["price"],
-        createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        id: json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
-        "decs": decs,
-        "type": type,
+        "desc": desc,
         "image_url": imageUrl,
         "stok": stok,
         "price": price,
-        "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt.toIso8601String(),
+        "id": id,
     };
 }

@@ -14,7 +14,7 @@ class RakitanBaruPage extends StatefulWidget {
 }
 
 class _RakitanBaruPageState extends State<RakitanBaruPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {

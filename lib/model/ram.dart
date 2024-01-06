@@ -1,22 +1,22 @@
 // To parse this JSON data, do
 //
-//     final cpu = cpuFromJson(jsonString);
+//     final ram = ramFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Cpu cpuFromJson(String str) => Cpu.fromJson(json.decode(str));
+Ram ramFromJson(String str) => Ram.fromJson(json.decode(str));
 
-String cpuToJson(Cpu data) => json.encode(data.toJson());
+String ramToJson(Ram data) => json.encode(data.toJson());
 
-class Cpu {
+class Ram {
     List<Data> data;
 
-    Cpu({
+    Ram({
         required this.data,
     });
 
-    factory Cpu.fromJson(Map<String, dynamic> json) => Cpu(
+    factory Ram.fromJson(Map<String, dynamic> json) => Ram(
         data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
     );
 
@@ -28,9 +28,12 @@ class Cpu {
 class Data {
     int id;
     String name;
-    String decs;
-    String type;
+    String desc;
+    String size;
     String imageUrl;
+    String type;
+    String speed;
+    String kapasitas;
     String stok;
     int price;
     DateTime createdAt;
@@ -39,9 +42,12 @@ class Data {
     Data({
         required this.id,
         required this.name,
-        required this.decs,
-        required this.type,
+        required this.desc,
+        required this.size,
         required this.imageUrl,
+        required this.type,
+        required this.speed,
+        required this.kapasitas,
         required this.stok,
         required this.price,
         required this.createdAt,
@@ -51,9 +57,12 @@ class Data {
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         name: json["name"],
-        decs: json["decs"],
-        type: json["type"],
+        desc: json["desc"],
+        size: json["size"],
         imageUrl: json["image_url"],
+        type: json["type"],
+        speed: json["speed"],
+        kapasitas: json["kapasitas"],
         stok: json["stok"],
         price: json["price"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -63,9 +72,12 @@ class Data {
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "decs": decs,
-        "type": type,
+        "desc": desc,
+        "size": size,
         "image_url": imageUrl,
+        "type": type,
+        "speed": speed,
+        "kapasitas": kapasitas,
         "stok": stok,
         "price": price,
         "created_at": createdAt.toIso8601String(),

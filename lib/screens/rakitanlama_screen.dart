@@ -10,7 +10,7 @@ class RakitanLamaPage extends StatefulWidget {
 }
 
 class _RakitanLamaPageState extends State<RakitanLamaPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   String? selectedValue;
 
   @override

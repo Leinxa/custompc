@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:market/screens/listpage_screen.dart';
+import 'package:market/screens/keranjang_screen.dart';
+import 'package:market/screens/list/listpage_screen.dart';
+import 'package:market/screens/rakitanpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:market/screens/signin_screen.dart';
 import 'menuprofile_screen.dart';
@@ -10,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isAuth = false;
-
+  int _currentIndex = 0;
   @override
   void initState(){
     super.initState();
@@ -46,8 +48,7 @@ class _HomePageState extends State<HomePage> {
                 text: 'Rakit PC',
                 icon: Icons.build,
                 onTap: () {
-                  // Tambahkan aksi ketika kotak kedua ditekan
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanTujuan()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RakitanPage()));
                 },
               ),
               SizedBox(height: 20),
@@ -56,8 +57,7 @@ class _HomePageState extends State<HomePage> {
                 text: 'Keranjang',
                 icon: Icons.shopping_cart,
                 onTap: () {
-                  // Tambahkan aksi ketika kotak ketiga ditekan
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanTujuan()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => KeranjangPage()));
                 },
               ),
               SizedBox(height: 20),
@@ -73,64 +73,44 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.blue, // Ganti warna sesuai keinginan Anda
-          child: Container(
-            height: 60.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.home, color: Colors.white),
-                  iconSize: 35,
-                  onPressed: () {
-                    // Aksi saat tombol Home ditekan
-                    _onItemTapped(0);
-                  },
-                ),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(Icons.inventory, color: Colors.white),
-                    iconSize: 35,
-                    onPressed: () {
-                      // Aksi saat tombol Daftar Barang ditekan
-                      _onItemTapped(1);
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(Icons.build, color: Colors.white),
-                    iconSize: 35,
-                    onPressed: () {
-                      // Aksi saat tombol Rakit PC ditekan
-                      _onItemTapped(2);
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(Icons.shopping_cart, color: Colors.white),
-                    iconSize: 35,
-                    onPressed: () {
-                      // Aksi saat tombol Keranjang ditekan
-                      _onItemTapped(3);
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(Icons.account_circle, color: Colors.white),
-                    iconSize: 42,
-                    onPressed: () {
-                      // Aksi saat tombol Profile ditekan
-                      _onItemTapped(4);
-                    },
-                  ),
-                ),
-              ],
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.blue,
+          fixedColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          currentIndex: _currentIndex,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-          ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.format_list_bulleted),
+              label: 'List',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.build),
+              label: 'Build',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
+              
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.account_circle),
+              label: 'Account',
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ),
       ),
     );

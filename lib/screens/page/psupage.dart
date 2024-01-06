@@ -7,31 +7,13 @@ class PsuPage extends StatefulWidget {
 }
 
 class _PsuPageState extends State<PsuPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Map<String, dynamic>> psuList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "PSU 1", "image": "https://example.com/psu1.jpg", "price": 800000.0},
-      {"name": "PSU 2", "image": "https://example.com/psu2.jpg", "price": 1000000.0},
-      {"name": "PSU 3", "image": "https://example.com/psu3.jpg", "price": 1200000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> psuListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      psuList = psuListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +75,11 @@ class _PsuPageState extends State<PsuPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: psuList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = psuList[index]['image'];
-              String psuName = psuList[index]['name'];
-              double psuPrice = psuList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String psuName = 'placeholder';
+              double psuPrice = 1200000;
 
               return Column(
                 children: [

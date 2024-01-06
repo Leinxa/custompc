@@ -7,31 +7,12 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
-  int _currentIndex = 0;
-  List<Map<String, dynamic>> caseList = [];
+  int _currentIndex = 2;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Case 1", "image": "https://example.com/case1.jpg", "price": 800000.0},
-      {"name": "Case 2", "image": "https://example.com/case2.jpg", "price": 900000.0},
-      {"name": "Case 3", "image": "https://example.com/case3.jpg", "price": 1000000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> caseListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      caseList = caseListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +74,11 @@ class _CasePageState extends State<CasePage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: caseList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = caseList[index]['image'];
-              String caseName = caseList[index]['name'];
-              double casePrice = caseList[index]['price'];
+              String imageUrl = "https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png";
+              String caseName = "motherboard";
+              double casePrice = 120000;
 
               return Column(
                 children: [

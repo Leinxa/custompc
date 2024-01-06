@@ -7,31 +7,12 @@ class MotherboardPage extends StatefulWidget {
 }
 
 class _MotherboardPageState extends State<MotherboardPage> {
-  int _currentIndex = 0;
-  List<Map<String, dynamic>> motherboardList = [];
+  int _currentIndex = 2;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "Motherboard 1", "image": "https://example.com/motherboard1.jpg", "price": 500000.0},
-      {"name": "Motherboard 2", "image": "https://example.com/motherboard2.jpg", "price": 600000.0},
-      {"name": "Motherboard 3", "image": "https://example.com/motherboard3.jpg", "price": 700000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> motherboardListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      motherboardList = motherboardListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,12 +74,11 @@ class _MotherboardPageState extends State<MotherboardPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: motherboardList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = motherboardList[index]['image'];
-              String motherboardName = motherboardList[index]['name'];
-              double motherboardPrice = motherboardList[index]['price'];
-
+              String imageUrl = "https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png";
+              String motherboardName = "motherboard";
+              double motherboardPrice = 120000;
               return Column(
                 children: [
                   ListTile(

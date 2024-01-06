@@ -7,31 +7,12 @@ class CpuPage extends StatefulWidget {
 }
 
 class _CpuPageState extends State<CpuPage> {
-  int _currentIndex = 0;
-  List<Map<String, dynamic>> cpuList = [];
+  int _currentIndex = 2;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromAPI();
-  }
-
-  void fetchDataFromAPI() {
-    String apiResponse = '''
-    [
-      {"name": "CPU 1", "image": "https://example.com/cpu1.jpg", "price": 1000000.0},
-      {"name": "CPU 2", "image": "https://example.com/cpu2.jpg", "price": 1200000.0},
-      {"name": "CPU 3", "image": "https://example.com/cpu3.jpg", "price": 1500000.0}
-    ]
-    ''';
-
-    List<dynamic> data = json.decode(apiResponse);
-    List<Map<String, dynamic>> cpuListFromAPI = List<Map<String, dynamic>>.from(data);
-
-    setState(() {
-      cpuList = cpuListFromAPI;
-    });
   }
 
   void onSearchPressed() {
@@ -93,11 +74,11 @@ class _CpuPageState extends State<CpuPage> {
             ],
           ),
           body: ListView.builder(
-            itemCount: cpuList.length,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              String imageUrl = cpuList[index]['image'];
-              String cpuName = cpuList[index]['name'];
-              double cpuPrice = cpuList[index]['price'];
+              String imageUrl = 'https://admisi.umy.ac.id/wp-content/uploads/2020/10/placeholder.png';
+              String cpuName = 'placeholder';
+              double cpuPrice = 12000000;
 
               return Column(
                 children: [
